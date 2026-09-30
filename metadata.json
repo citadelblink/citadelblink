@@ -1,0 +1,6 @@
+{
+  "name": "Citadel Biz Link",
+  "description": "Multi-venture commercial enterprise providing modern business center services, student hostels, verified auto sales, cooperative financing, and pure palm oil commodities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
