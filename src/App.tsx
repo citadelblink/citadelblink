@@ -12,6 +12,7 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { InquiryModal } from './components/InquiryModal';
 import { ServiceDetailPage } from './components/ServiceDetailPage';
+import { FloatingWhatsAppButton } from './components/FloatingWhatsAppButton';
 
 export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -178,6 +179,9 @@ export default function App() {
         onOpenInquiry={(division) => openInquiryModal(division || 'General Inquiry')} 
         onNavigateDivision={handleNavigateToDetailedPage}
       />
+
+      {/* Floating Instant WhatsApp Channel */}
+      <FloatingWhatsAppButton currentDivision={currentView} />
 
       {/* Multi-Purpose Interactive Inquiry & Reservation Modal */}
       <InquiryModal

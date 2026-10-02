@@ -25,7 +25,7 @@ import {
   Sparkles,
   ExternalLink
 } from 'lucide-react';
-import { CITADEL_DIVISIONS, HOSTEL_ROOMS, VEHICLE_INVENTORY, COOPERATIVE_PLANS, AGRO_PRODUCTS, COMPANY_CONTACTS } from '../data/citadelData';
+import { CITADEL_DIVISIONS, HOSTEL_ROOMS, VEHICLE_INVENTORY, COOPERATIVE_PLANS, AGRO_PRODUCTS, COMPANY_CONTACTS, WHATSAPP_PHONE, openWhatsApp, buildWhatsAppUrl, PREWRITTEN_MESSAGES } from '../data/citadelData';
 import heroHqImg from '../assets/images/hero_citadel_hq_1790765826159.jpg';
 import hostelSuiteImg from '../assets/images/hostel_suite_1790765845464.jpg';
 import autoShowroomImg from '../assets/images/auto_showroom_1790765859771.jpg';
@@ -94,10 +94,8 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
   const deliveryCost = destination.includes('Ilorin') ? 2500 : 7000;
 
   const handleWhatsApp = () => {
-    const text = encodeURIComponent(
-      `Hello Citadel Biz Link! I am inquiring about ${division.name} in Ilorin, Kwara State.`
-    );
-    window.open(`https://wa.me/${COMPANY_CONTACTS.whatsappNumber.replace('+', '')}?text=${text}`, '_blank');
+    const text = `Hello Citadel Biz Link! I am inquiring about ${division.name} in Ilorin, Kwara State. Please share pricing, availability, and inspection procedures.`;
+    openWhatsApp(text);
   };
 
   return (
@@ -159,7 +157,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
                 onClick={handleWhatsApp}
                 className="inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold text-amber-300 bg-purple-900/60 hover:bg-purple-900 border border-amber-400/40 hover:border-amber-400 rounded-xl transition-all shadow-sm"
               >
-                <MessageSquare className="w-4 h-4 text-emerald-400" />
+                <MessageSquare className="w-4 h-4 text-amber-300" />
                 <span>Chat on WhatsApp</span>
               </button>
             </div>
@@ -732,14 +730,19 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
                   Direct Hotline & WhatsApp
                 </div>
                 <a 
-                  href={`tel:${COMPANY_CONTACTS.phonePrimary}`} 
+                  href={buildWhatsAppUrl(`Hello Citadel Biz Link! I am inquiring about ${division.name} in Ilorin, Kwara State.`)}
+                  target="_blank"
+                  rel="noopener noreferrer" 
                   className="font-extrabold text-purple-950 dark:text-purple-100 text-sm hover:text-amber-500 flex items-center gap-2 tabular-nums"
                 >
                   <Phone className="w-4 h-4 text-amber-500" />
-                  <span>{COMPANY_CONTACTS.phonePrimary}</span>
+                  <span>{WHATSAPP_PHONE}</span>
                 </a>
-                <div className="text-[11px] text-slate-500">
-                  Available for phone calls and direct WhatsApp bookings.
+                <div className="text-[11px] text-slate-500 flex items-center justify-between">
+                  <span>Official Email:</span>
+                  <a href={`mailto:${COMPANY_CONTACTS.email}`} className="font-semibold text-purple-900 dark:text-amber-400 underline">
+                    {COMPANY_CONTACTS.email}
+                  </a>
                 </div>
               </div>
 

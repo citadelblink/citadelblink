@@ -1,6 +1,6 @@
 import React from 'react';
-import { COMPANY_CONTACTS } from '../data/citadelData';
-import { Phone, MapPin } from 'lucide-react';
+import { COMPANY_CONTACTS, WHATSAPP_PHONE, buildWhatsAppUrl, PREWRITTEN_MESSAGES } from '../data/citadelData';
+import { Phone, MapPin, MessageSquare, Mail } from 'lucide-react';
 
 interface FooterProps {
   onOpenInquiry: (divisionName?: string) => void;
@@ -18,7 +18,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry, onNavigateDivisio
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <div className="font-display text-2xl font-bold text-purple-950 dark:text-white flex items-center gap-2.5">
-              <span className="w-3 h-3 bg-gradient-to-br from-amber-400 to-amber-600 rounded-sm inline-block shadow-sm"></span>
+              <img 
+                src="/android-chrome-192x192.png" 
+                alt="Citadel Logo" 
+                className="w-7 h-7 object-contain shrink-0 drop-shadow-sm" 
+              />
               Citadel Biz Link
             </div>
             <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed max-w-sm">
@@ -31,7 +35,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry, onNavigateDivisio
               </div>
               <div className="flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5 text-amber-500" />
-                <span>Hotline: {COMPANY_CONTACTS.phonePrimary}</span>
+                <a
+                  href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-600 dark:hover:text-amber-400 font-bold transition-colors"
+                >
+                  Hotline / WhatsApp: <span className="tabular-nums">{WHATSAPP_PHONE}</span>
+                </a>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5 text-amber-500" />
+                <a href={`mailto:${COMPANY_CONTACTS.email}`} className="hover:text-purple-900 dark:hover:text-amber-300 underline font-medium">
+                  {COMPANY_CONTACTS.email}
+                </a>
               </div>
             </div>
           </div>
@@ -125,21 +142,32 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry, onNavigateDivisio
               Direct Contact Desk
             </div>
             <div className="space-y-2 text-xs">
-              <div className="text-purple-950 dark:text-purple-200 font-bold text-sm">
-                <a href={`tel:${COMPANY_CONTACTS.phonePrimary}`} className="hover:text-amber-600 transition-colors tabular-nums">
-                  {COMPANY_CONTACTS.phonePrimary}
+              <div className="text-purple-950 dark:text-purple-200 font-bold text-sm flex items-center gap-1.5">
+                <Phone className="w-4 h-4 text-amber-500" />
+                <a 
+                  href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-600 transition-colors tabular-nums"
+                >
+                  {WHATSAPP_PHONE}
                 </a>
               </div>
               <div className="text-slate-500">
-                {COMPANY_CONTACTS.email}
+                <a href={`mailto:${COMPANY_CONTACTS.email}`} className="hover:text-purple-900 dark:hover:text-amber-300 underline font-medium">
+                  {COMPANY_CONTACTS.email}
+                </a>
               </div>
               <div className="pt-2">
-                <button
-                  onClick={() => onOpenInquiry()}
-                  className="px-4 py-2 text-xs font-bold text-white bg-purple-900 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 rounded-xl transition-all shadow-md shadow-purple-900/20"
+                <a
+                  href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-purple-900 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 rounded-xl transition-all shadow-md shadow-purple-900/20 active:scale-95"
                 >
-                  Schedule Appointment
-                </button>
+                  <MessageSquare className="w-3.5 h-3.5 text-purple-200" />
+                  <span>Chat on WhatsApp ({WHATSAPP_PHONE})</span>
+                </a>
               </div>
             </div>
           </div>
@@ -154,7 +182,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenInquiry, onNavigateDivisio
           <div className="flex items-center gap-4">
             <span>CAC Regulated Multi-Enterprise</span>
             <span aria-hidden="true">·</span>
-            <span>Tel: {COMPANY_CONTACTS.phonePrimary}</span>
+            <span>WhatsApp: {WHATSAPP_PHONE}</span>
+            <span aria-hidden="true">·</span>
+            <span>{COMPANY_CONTACTS.email}</span>
           </div>
         </div>
 

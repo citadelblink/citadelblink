@@ -4,10 +4,11 @@ import {
   Clock, 
   MessageSquare, 
   CheckCircle2, 
-  Send,
-  Phone
+  Phone,
+  Mail,
+  ArrowRight
 } from 'lucide-react';
-import { COMPANY_CONTACTS } from '../data/citadelData';
+import { COMPANY_CONTACTS, WHATSAPP_PHONE, openWhatsApp, buildWhatsAppUrl, PREWRITTEN_MESSAGES } from '../data/citadelData';
 
 interface ContactSectionProps {
   onSuccessPrompt: (division: string, details: string) => void;
@@ -24,7 +25,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onSuccessPrompt 
     e.preventDefault();
     if (!name.trim() || !contact.trim()) return;
     setSubmitted(true);
+    
+    // Automatically trigger WhatsApp with prewritten message
+    const prewritten = PREWRITTEN_MESSAGES.contactForm(name, contact, division, message);
+    openWhatsApp(prewritten);
+
     onSuccessPrompt(division, `${name} (${contact}): ${message}`);
+  };
+
+  const handleLaunchWhatsAppAgain = () => {
+    const prewritten = PREWRITTEN_MESSAGES.contactForm(name, contact, division, message);
+    openWhatsApp(prewritten);
   };
 
   const branchLocations = [
@@ -103,24 +114,35 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onSuccessPrompt 
             {/* Direct Phone / WhatsApp strip */}
             <div className="p-6 rounded-2xl bg-white dark:bg-[#151024] border border-purple-100 dark:border-purple-900/40 flex flex-wrap items-center justify-between gap-4 shadow-sm">
               <div className="space-y-1">
-                <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Central Inquiries Hotline</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Central Inquiries & Desk</div>
                 <div className="text-base font-extrabold text-purple-950 dark:text-white tabular-nums flex items-center gap-2">
                   <Phone className="w-4 h-4 text-amber-500" />
-                  <a href={`tel:${COMPANY_CONTACTS.phonePrimary}`} className="hover:text-amber-600 transition-colors">
-                    {COMPANY_CONTACTS.phonePrimary}
+                  <a 
+                    href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-amber-600 transition-colors"
+                  >
+                    {WHATSAPP_PHONE}
                   </a>
                   <span className="text-xs font-normal text-slate-500">({COMPANY_CONTACTS.phoneFormatted})</span>
+                </div>
+                <div className="text-xs text-slate-500 flex items-center gap-1.5 pt-1">
+                  <Mail className="w-3.5 h-3.5 text-amber-500" />
+                  <a href={`mailto:${COMPANY_CONTACTS.email}`} className="hover:text-purple-900 dark:hover:text-amber-300 underline font-medium">
+                    {COMPANY_CONTACTS.email}
+                  </a>
                 </div>
               </div>
 
               <a
-                href={`https://wa.me/${COMPANY_CONTACTS.whatsappNumber.replace('+', '')}?text=${encodeURIComponent('Hello Citadel Biz Link Ilorin! I would like to inquire about your services.')}`}
+                href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)}
                 target="_blank"
-                rel="noreferrer"
-                className="px-4 py-2.5 text-xs font-bold text-white bg-purple-900 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 rounded-xl transition-all shadow-md shadow-purple-900/20 flex items-center gap-2"
+                rel="noopener noreferrer"
+                className="px-4 py-2.5 text-xs font-bold text-white bg-purple-900 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 rounded-xl transition-all shadow-md shadow-purple-900/20 flex items-center gap-2 active:scale-95"
               >
                 <MessageSquare className="w-4 h-4 text-purple-200" />
-                <span>WhatsApp Desk (08036955995)</span>
+                <span>WhatsApp Desk ({WHATSAPP_PHONE})</span>
               </a>
             </div>
           </div>
@@ -197,26 +219,38 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onSuccessPrompt 
 
                 <button
                   type="submit"
-                  className="btn-gold w-full py-3 px-4 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 active:scale-[0.98]"
+                  className="btn-gold w-full py-3.5 px-4 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
                 >
-                  <Send className="w-3.5 h-3.5 text-purple-950" />
-                  <span>Send Direct Message</span>
+                  <MessageSquare className="w-4 h-4 text-purple-950" />
+                  <span>Send Direct Message (WhatsApp)</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-purple-950" />
                 </button>
               </form>
             ) : (
-              <div className="p-6 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/40 text-center space-y-3">
-                <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto" />
-                <div className="text-sm font-bold text-purple-950 dark:text-white">Message Dispatched!</div>
+              <div className="p-6 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/40 text-center space-y-4">
+                <CheckCircle2 className="w-8 h-8 text-amber-500 dark:text-amber-400 mx-auto" />
+                <div className="text-sm font-bold text-purple-950 dark:text-white">Prewritten WhatsApp Brief Generated!</div>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                  Thank you, <span className="font-semibold text-purple-900 dark:text-white">{name}</span>. Your brief regarding <span className="font-semibold text-amber-700 dark:text-amber-400">{division}</span> has been transferred to our Ilorin branch desk officer.
+                  Thank you, <span className="font-semibold text-purple-900 dark:text-white">{name}</span>. Your brief regarding <span className="font-semibold text-amber-700 dark:text-amber-400">{division}</span> has been formatted and dispatched toward our WhatsApp desk at <strong className="text-purple-950 dark:text-white">{WHATSAPP_PHONE}</strong>.
                 </p>
-                <button
-                  type="button"
-                  onClick={() => setSubmitted(false)}
-                  className="text-xs text-purple-700 dark:text-amber-400 font-bold hover:underline pt-2 inline-block"
-                >
-                  Send another request
-                </button>
+                <div className="pt-2 flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={handleLaunchWhatsAppAgain}
+                    className="btn-gold py-2.5 px-4 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-purple-950" />
+                    <span>Open WhatsApp Chat ({WHATSAPP_PHONE})</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="text-xs text-purple-700 dark:text-amber-400 font-bold hover:underline pt-1 inline-block"
+                  >
+                    Send another request
+                  </button>
+                </div>
               </div>
             )}
 

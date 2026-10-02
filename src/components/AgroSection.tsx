@@ -8,7 +8,7 @@ import {
   ArrowRight,
   ExternalLink
 } from 'lucide-react';
-import { AGRO_PRODUCTS, COMPANY_CONTACTS } from '../data/citadelData';
+import { AGRO_PRODUCTS, COMPANY_CONTACTS, WHATSAPP_PHONE, openWhatsApp } from '../data/citadelData';
 import { AgroProduct } from '../types';
 import agroPalmoilImg from '../assets/images/agro_palmoil_1790765876514.jpg';
 
@@ -40,10 +40,8 @@ export const AgroSection: React.FC<AgroSectionProps> = ({ onOrderAgro, onViewDed
   };
 
   const handleWhatsAppOrder = () => {
-    const message = encodeURIComponent(
-      `Hello Citadel Agro Commodities (Ilorin), I would like to order: ${quantity} unit(s) of ${selectedProduct.size} (${formatNgn(productTotal)}), Destination: ${destination}. Total estimate: ${formatNgn(grandTotal)}.`
-    );
-    window.open(`https://wa.me/${COMPANY_CONTACTS.whatsappNumber.replace('+', '')}?text=${message}`, '_blank');
+    const message = `Hello Citadel Agro Commodities (08036955995)! I would like to order: ${quantity} unit(s) of ${selectedProduct.size} (${formatNgn(productTotal)}), Destination: ${destination}. Total estimate: ${formatNgn(grandTotal)}. Please confirm current dispatch availability in Ilorin, Kwara State.`;
+    openWhatsApp(message);
   };
 
   return (
@@ -304,10 +302,10 @@ export const AgroSection: React.FC<AgroSectionProps> = ({ onOrderAgro, onViewDed
 
                 <button
                   onClick={handleWhatsAppOrder}
-                  className="w-full py-2.5 px-4 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 px-4 text-xs font-bold text-purple-950 dark:text-amber-300 bg-purple-100 dark:bg-purple-950/80 border border-purple-200 dark:border-purple-800/80 hover:border-amber-400 rounded-xl transition-colors flex items-center justify-center gap-1.5 active:scale-[0.98] shadow-sm"
                 >
                   <span>Instant WhatsApp Order (08036955995)</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3 h-3 text-amber-500" />
                 </button>
               </div>
             </div>

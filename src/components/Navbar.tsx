@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Menu, X, ArrowUpRight, Phone, Sun, Moon } from 'lucide-react';
-import { COMPANY_CONTACTS } from '../data/citadelData';
+import { Menu, X, ArrowUpRight, Phone, MessageSquare, Sun, Moon } from 'lucide-react';
+import { COMPANY_CONTACTS, WHATSAPP_PHONE, buildWhatsAppUrl, PREWRITTEN_MESSAGES } from '../data/citadelData';
 
 interface NavbarProps {
   onOpenInquiry: (defaultDivision?: string) => void;
@@ -32,12 +32,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-50 w-full border-b border-purple-100 dark:border-purple-900/40 bg-white/95 dark:bg-[#0C0816]/95 backdrop-blur-md transition-colors duration-200">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         
-        {/* Zone 1: Single text element wordmark */}
+        {/* Zone 1: Single text element wordmark with emblem */}
         <button 
           onClick={onNavigateHome}
           className="font-display text-2xl font-bold tracking-tight text-purple-950 dark:text-white transition-opacity hover:opacity-90 flex items-center gap-2.5 text-left"
         >
-          <span className="w-3 h-3 bg-gradient-to-br from-amber-400 to-amber-600 rounded-sm inline-block shadow-sm"></span>
+          <img 
+            src="/android-chrome-192x192.png" 
+            alt="Citadel Logo" 
+            className="w-8 h-8 object-contain shrink-0 drop-shadow-sm" 
+          />
           <span>Citadel Biz Link</span>
         </button>
 
@@ -65,9 +69,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>Ilorin, Kwara State</span>
           </div>
 
-          {/* Direct Phone link */}
+          {/* Direct Phone / WhatsApp link */}
           <a
-            href={`tel:${COMPANY_CONTACTS.phonePrimary}`}
+            href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Chat directly on WhatsApp (08036955995)"
             className="hidden xl:flex items-center gap-1.5 text-xs font-bold text-purple-950 dark:text-purple-200 hover:text-amber-500 transition-colors"
           >
             <Phone className="w-3.5 h-3.5 text-amber-500" />
@@ -147,7 +154,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             ))}
             <div className="pt-4 border-t border-purple-100 dark:border-purple-900/40 flex flex-col gap-3">
               <a
-                href={`tel:${COMPANY_CONTACTS.phonePrimary}`}
+                href={buildWhatsAppUrl(PREWRITTEN_MESSAGES.general)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm font-semibold text-purple-900 dark:text-purple-300"
               >
                 <Phone className="w-4 h-4 text-purple-600 dark:text-purple-400" />

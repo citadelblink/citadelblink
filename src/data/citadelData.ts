@@ -411,10 +411,60 @@ export const COMPANY_CONTACTS = {
   phonePrimary: '08036955995',
   phoneFormatted: '+234 803 695 5995',
   whatsappNumber: '+2348036955995',
-  email: 'inquiries@citadelbizlink.com',
+  whatsappDigits: '2348036955995',
+  email: 'citadelblink@gmail.com',
   headquarters: 'Ilorin, Kwara State',
   hostelLocation: 'Ilorin, Kwara State',
   autoHubLocation: 'Ilorin, Kwara State',
   agroDepot: 'Ilorin, Kwara State',
   workingHours: 'Monday – Saturday: 8:00 AM – 7:30 PM (Hostels 24/7 Security & Solar Backup)'
+};
+
+export const WHATSAPP_PHONE = '08036955995';
+export const WHATSAPP_INTL = '2348036955995';
+
+/**
+ * Builds a valid WhatsApp Web / App universal link with a prewritten URL-encoded message
+ */
+export const buildWhatsAppUrl = (message: string): string => {
+  const cleanDigits = COMPANY_CONTACTS.whatsappDigits;
+  return `https://wa.me/${cleanDigits}?text=${encodeURIComponent(message.trim())}`;
+};
+
+/**
+ * Opens WhatsApp in a new browser tab with the prewritten message
+ */
+export const openWhatsApp = (message: string): void => {
+  if (typeof window !== 'undefined') {
+    const url = buildWhatsAppUrl(message);
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+};
+
+/**
+ * Standardized prewritten messages for each division and communication channel
+ */
+export const PREWRITTEN_MESSAGES = {
+  general: 'Hello Citadel Biz Link! I would like to inquire about your services and enterprise operations in Ilorin, Kwara State.',
+  
+  hostel: (roomTitle?: string, price?: string) => 
+    `Hello Citadel Living Hostels! I am interested in inquiring about room availability and scheduling an inspection tour${roomTitle ? ` for ${roomTitle}` : ''}${price ? ` (${price})` : ''} in Ilorin, Kwara State.`,
+
+  auto: (vehicleTitle?: string, price?: string) => 
+    `Hello Citadel Auto Hub! I would like to inquire about ${vehicleTitle || 'vehicle inventory'}${price ? ` (${price})` : ''}. Please share physical inspection availability in Ilorin and financing options.`,
+
+  cooperative: (planTitle?: string, details?: string) => 
+    `Hello Citadel Multipurpose Cooperative Society! I would like to enroll/inquire regarding the ${planTitle || 'membership plan'}${details ? ` (${details})` : ''} in Ilorin, Kwara State.`,
+
+  agro: (orderSummary?: string, priceEst?: string) => 
+    `Hello Citadel Agro Commodities! I would like to place an order for 100% pure unadulterated red palm oil${orderSummary ? `: ${orderSummary}` : ''}${priceEst ? ` (Est: ${priceEst})` : ''} with delivery/pickup in Ilorin, Kwara State.`,
+
+  cyber: (serviceName?: string, turnaround?: string) => 
+    `Hello Citadel Cyber & Business Center! I would like to request ${serviceName || 'business center service'}${turnaround ? ` (Turnaround: ${turnaround})` : ''} at your Ilorin office.`,
+
+  contactForm: (name: string, contact: string, division: string, details?: string) => 
+    `Hello Citadel Biz Link (Ilorin Desk)!\n\n*New Direct Inquiry from Website*\n• Client: ${name}\n• Contact: ${contact}\n• Division: ${division}\n• Details: ${details || 'Consultation request'}\n• Location: Ilorin, Kwara State\n• Official Email: citadelblink@gmail.com`,
+
+  inquiryModal: (ticketId: string, fullName: string, phone: string, email: string, division: string, notes: string) => 
+    `Hello Citadel Biz Link (Ilorin HQ)!\n\n*Official Inquiry Ticket: ${ticketId}*\n• Name: ${fullName}\n• Phone / WhatsApp: ${phone}\n• Email: ${email || 'N/A'}\n• Target Division: ${division}\n• Request Details: ${notes || 'Priority Service Inbound'}\n• Location: Ilorin, Kwara State\n\nPlease connect me with the division desk officer.`
 };
